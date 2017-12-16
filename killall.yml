@@ -1,8 +1,16 @@
 ---
 - hosts: all
   gather_facts: False
+  become: True
   tasks:
   - name: Find nuttcp processes
     shell: "ps -aux | grep nuttcp | grep -v grep | awk {'print $2'}"
     register: has_nuttcp
+    changed_when: has_nuttcp.rc != 0
   - debug: msg="{{ has_nuttcp }}"
+
+  - name: Kill all nuttcp process
+    shell: "kill {{ item }}"
+    with_items:
+      - "{{ has_nuttcp.stdout_lines }}"
+    when: has_nuttcp.stdout_lines != ''

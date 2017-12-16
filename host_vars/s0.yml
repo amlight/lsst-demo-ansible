@@ -1,0 +1,15 @@
+---
+flows:
+  - { "dst_ip": "10.38.90.3", "cpu": "1/1", "ctrl_port": 5002, "data_port": 5102 }
+  - { "dst_ip": "10.38.91.3", "cpu": "2/2", "ctrl_port": 5003, "data_port": 5103 }
+  - { "dst_ip": "10.38.92.3", "cpu": "3/3", "ctrl_port": 5004, "data_port": 5104 }
+  - { "dst_ip": "10.38.93.3", "cpu": "4/4", "ctrl_port": 5005, "data_port": 5105 }
+  - { "dst_ip": "10.38.94.3", "cpu": "5/5", "ctrl_port": 5006, "data_port": 5106 }
+  - { "dst_ip": "10.38.95.3", "cpu": "6/6", "ctrl_port": 5007, "data_port": 5107 }
+nuttcp_server:
+  - { "ctrl_port": 5002, "data_port": 5102 }
+  - { "ctrl_port": 5003, "data_port": 5103 }
+  - { "ctrl_port": 5004, "data_port": 5104 }
+  - { "ctrl_port": 5005, "data_port": 5105 }
+  - { "ctrl_port": 5006, "data_port": 5106 }
+  - { "ctrl_port": 5007, "data_port": 5107 }
