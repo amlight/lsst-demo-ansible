@@ -31,7 +31,7 @@ ansible-playbook nuttcp.yml --user=LOCALUSER --limit=ps-bw.l3-santiago.ampath.ne
 ### Overriding flow_bw to 2G per flow
 
 ```
-ansible-playbook nuttcp.yml --user=LOCALUSER -e=flow_bw=2G -vv --forks=4
+ansible-playbook nuttcp.yml --user=LOCALUSER -e=flow_bw=2G -vv --forks=6
 ```
 
 ## iperf3 examples
@@ -39,6 +39,6 @@ ansible-playbook nuttcp.yml --user=LOCALUSER -e=flow_bw=2G -vv --forks=4
 Since this playbooks leverages the reverse option to start the traffic in the opposite direction, you should limit to a single DTN:
 
 ```
-ansible-playbook iperf3.yml --user=LOCALUSER --limit=ps-bw.l3-santiago.ampath.net -vv --forks=4
+ansible-playbook iperf3.yml --user=LOCALUSER --limit=ps-bw.l3-santiago.ampath.net -vv --forks=6
 ```
 
