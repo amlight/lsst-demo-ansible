@@ -1,0 +1,50 @@
+---
+- hosts: all
+  gather_facts: False
+  become: True
+  vars:
+    duration: 300
+    length: 8972
+    prefix_str: iperf
+    flow_bw: 1G
+    wait: 10
+  tasks:
+  - name: Find iperf3 server processes
+    shell: "ps -aux | egrep 'iperf3 -s' | grep -v grep | awk {'print $2'}"
+    register: has_iperf3
+    changed_when: has_iperf3.rc != 0
+  - debug: msg="{{ has_iperf3 }}"
+
+  - name: Start over all iperf3 servers
+    shell:  "nohup iperf3 -s -p {{ item.ctrl_port }} > /dev/null 2>&1 &"
+    async: 86400
+    poll: 0
+    with_items:
+      - "{{ iperf3_server }}"
+    when: has_iperf3.stdout == ''
+
+  - name: Start iperf3 UDP data transfers in parallel for {{ duration }}
+    shell:  "nohup iperf3 -u -l{{ length }} -p {{ item.ctrl_port }} -t {{ duration }} -w4m -b{{ flow_bw }} -i 1 -A {{ item.cpu }} -c {{ item.dst_ip }} > /tmp/{{ prefix_str }}_{{ item.dst_ip }}.log 2>&1 &"
+    async: 86400
+    poll: 0
+    with_items:
+      - "{{ iperf3_flows }}"
+
+  - name: Start reverse iperf3 UDP data transfers in parallel for {{ duration }}
+    shell:  "nohup iperf3 -u -l{{ length }} -p {{ item.ctrl_port }} -t {{ duration }} -w4m -b{{ flow_bw }} -i 1 -A {{ item.cpu }} -c {{ item.dst_ip }} -R > /tmp/{{ prefix_str }}_{{ item.dst_ip }}_reverse.log 2>&1 &"
+    async: 86400
+    poll: 0
+    with_items:
+      - "{{ iperf3_flows }}"
+
+  - name: Wait for {{ wait }} seconds before checking the transfers output
+    wait_for:
+      timeout: "{{ wait }}"
+
+  - name: Verifying data transfers output
+    shell: "nohup tail /tmp/{{ prefix_str }}_{{ item.dst_ip }}.log"
+    register: transfers_res
+    with_items:
+      - "{{ nuttcp_flows }}"
+
+  - debug: var=transfers_res
