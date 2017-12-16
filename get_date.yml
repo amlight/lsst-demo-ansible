@@ -1,0 +1,8 @@
+---
+- hosts: all
+  gather_facts: False
+  tasks:
+  - name: Get current date
+    command: date
+    register: cmd_out
+  - debug: msg="{{ cmd_out }}"

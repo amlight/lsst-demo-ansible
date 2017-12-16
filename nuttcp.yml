@@ -1,0 +1,18 @@
+---
+- hosts: all
+  gather_facts: False
+  vars:
+    duration: 10s
+    length: 8972
+    prefix_str: nuttcp
+    prefix_n: 1
+    flows:
+      - { "hostname": "test2", "ip": "10.38.90.4" }
+      - { "hostname": "test3", "ip": "10.38.91.4" }
+  tasks:
+  - name: Run nuttcp
+    shell:  "nuttcp -xc 2/2 -P 5002 -p 5102 -l{{ length }} -T{{ duration }} -u -w4m -R1G -i 1 {{ item.ip }} > /tmp/{{ item.ip }}.log"
+    async: 86400
+    poll: 0
+    with_items:
+      - "{{ flows }}"

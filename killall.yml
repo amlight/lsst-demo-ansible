@@ -1,0 +1,8 @@
+---
+- hosts: all
+  gather_facts: False
+  tasks:
+  - name: Find nuttcp processes
+    shell: "ps -aux | grep nuttcp | grep -v grep | awk {'print $2'}"
+    register: has_nuttcp
+  - debug: msg="{{ has_nuttcp }}"

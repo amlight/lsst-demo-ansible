@@ -1,0 +1,4 @@
+---
+flows:
+  - { hostname: "test2", ip: "10.38.90.4" }
+  - { hostname: "test3", ip: "10.38.91.4" }

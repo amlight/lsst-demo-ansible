@@ -1,0 +1,12 @@
+---
+- hosts: all
+  gather_facts: False
+  tasks:
+  - name: Add public keys
+    authorized_key:
+      user: "{{ ansible_user }}"
+      key: "{{ lookup('file', '{{ item }}') }}"
+      state: present
+      exclusive: no
+    with_fileglob:
+        - "public_keys/*.pub"
