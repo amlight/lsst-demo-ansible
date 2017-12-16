@@ -9,7 +9,7 @@
     changed_when: has_nuttcp.rc != 0
   - debug: msg="{{ has_nuttcp }}"
 
-  - name: Kill all nuttcp process
+  - name: Kill all nuttcp processes
     shell: "kill {{ item }}"
     with_items:
       - "{{ has_nuttcp.stdout_lines }}"
