@@ -3,7 +3,7 @@
   gather_facts: False
   become: True
   tasks:
-  - name: Find nuttcp processes
+  - name: Find iperf3 server processes
     shell: "ps -aux | grep iperf3 -s | grep -v grep | awk {'print $2'}"
     register: has_iperf3
     changed_when: has_iperf3.rc != 0
@@ -12,5 +12,5 @@
   - name: Kill all iperf3 processes
     shell: "kill {{ item }}"
     with_items:
-      - "{{ has_nuttcp.stdout_lines }}"
-    when: has_nuttcp.stdout_lines != ''
+      - "{{ has_iperf3.stdout_lines }}"
+    when: has_iperf3.stdout_lines != ''

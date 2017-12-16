@@ -30,13 +30,6 @@
     with_items:
       - "{{ iperf3_flows }}"
 
-  - name: Start reverse iperf3 UDP data transfers in parallel for {{ duration }}
-    shell:  "nohup iperf3 -u -l{{ length }} -p {{ item.ctrl_port }} -t {{ duration }} -w4m -b{{ flow_bw }} -i 1 -A {{ item.cpu }} -c {{ item.dst_ip }} -R > /tmp/{{ prefix_str }}_{{ item.dst_ip }}_reverse.log 2>&1 &"
-    async: 86400
-    poll: 0
-    with_items:
-      - "{{ iperf3_flows }}"
-
   - name: Wait for {{ wait }} seconds before checking the transfers output
     wait_for:
       timeout: "{{ wait }}"

@@ -1,10 +1,7 @@
 
 ## LSST 2017 EoY demo
 
-You can find some Ansible playbooks for generating traffic with nuttcp and iperf3 for the LSST demo in 2017. In order to generate bidirectional traffic:
-
-- for nuttcp, you should have ssh access on all DTNs/servers.
-- for iperf3, as long as you can manage one DTN/server pair is enough since this playbook leverages the reverse option.
+You can find some Ansible playbooks for generating traffic with nuttcp and iperf3 for the LSST demo in 2017. In order to generate bidirectional traffic, you should have access to both servers.
 
 ## nuttcp examples
 
@@ -36,9 +33,16 @@ ansible-playbook nuttcp.yml --user=LOCALUSER -e=flow_bw=2G -vv --forks=6
 
 ## iperf3 examples
 
-Since this playbooks leverages the reverse option to start the traffic in the opposite direction, you should limit to a single DTN:
+### Unidirectional traffic:
 
 ```
 ansible-playbook iperf3.yml --user=LOCALUSER --limit=ps-bw.l3-santiago.ampath.net -vv --forks=6
 ```
+
+### Bidirectional traffic:
+
+```
+ansible-playbook iperf3.yml --user=LOCALUSER -vv --forks=6
+```
+
 
